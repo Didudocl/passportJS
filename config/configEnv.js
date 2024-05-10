@@ -23,3 +23,5 @@ dotenv.config({ path: envFilePath });
 export const keyID = process.env.clientID;
 // Exporta la variable de entorno clientSecret
 export const keySecret = process.env.clientSecret;
+// Exporta la variable de entorno cookieKey
+export const cookieKey = process.env.cookieKey;
