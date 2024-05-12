@@ -4,11 +4,16 @@ import profileRoutes from './routes/profile.routes.js';
 import { passportSetup } from './config/passport-setup.js';
 import admin from 'firebase-admin';
 import fs from 'fs';
-import cookieSession from 'cookie-session';
+import session from 'express-session';
 import { cookieKey } from './config/configEnv.js';
 import passport from 'passport';
+import bodyParser from 'body-parser';
 
 const app = express();
+
+// Configura body-parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Configura el motor de plantillas EJS
 app.set('view engine', 'ejs');
@@ -16,10 +21,12 @@ app.set('view engine', 'ejs');
 // Configura Passport
 passportSetup();
 
-// Configura el middleware de sesiones utilizando cookie-session
-app.use(cookieSession({
-    maxAge: 24*60*60*1000, // 24 horas
-    keys: [cookieKey]
+// Configura el middleware de sesiones utilizando express-session
+app.use(session({
+    secret: cookieKey,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 horas
 }));
 
 

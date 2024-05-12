@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+</head>
+<body>
+    <h1>Create Event</h1>
+    <form action="/auth/crear_event" method="post">
+        <label for="summary">Summary:</label><br>
+        <input type="text" id="summary" name="summary" required><br>
+        
+        <label for="location">Location:</label><br>
+        <input type="text" id="location" name="location"><br>
+        
+        <label for="description">description:</label><br>
+        <input type="text" id="description" name="description" required><br>
+        
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        
+        <input type="submit" value="Create Event">
+    </form>
+</body>
+</html>

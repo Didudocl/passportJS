@@ -3,11 +3,14 @@ import GoogleStrategy from 'passport-google-oauth20';
 import { keyID, keySecret } from './configEnv.js';
 import {db} from '../index.js';
 
+let usuarioDoc;
+
+// * Se utiliza para convertir el objeto de usuario en un id unico, que se almacena en la sesión.
 passport.serializeUser((user, done) => {
-    done(null, user.googleID);
+    done(null, user.googleID);  
 })
 
-// ! Me quedo dando vuelta este xaval
+// * Se utiliza para recuperar el objeto de usuario completo a partir del id unico almacenado en la sesión.
 passport.deserializeUser((id, done) => {
     // Recupera el usuario de la base de datos usando el ID único
     db.collection('users').doc(id).get()
@@ -23,17 +26,19 @@ passport.deserializeUser((id, done) => {
 export function passportSetup() {
     passport.use(
         new GoogleStrategy({
-            callbackURL: '/auth/google/redirect',
+            callbackURL: 'http://localhost:3000/auth/google/redirect',
             clientID: keyID,
-            clientSecret: keySecret
+            clientSecret: keySecret,
+            scope: ['profile', 'email', 'https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.events'],
         }, async (accessToken, refreshToken, profile, done) => {
             // passport callback function
             try {
                 const usuarioRef = await db.collection('users').doc(profile.id).get();
                 if (usuarioRef.exists) {
-                    const usuarioDoc = {
+                    usuarioDoc = {
                         googleID: usuarioRef._fieldsProto.googleID.stringValue,
-                        name: usuarioRef._fieldsProto.name.stringValue
+                        name: usuarioRef._fieldsProto.name.stringValue,
+                        token: accessToken
                     };
                     return done(null, usuarioDoc);
                 } else {
@@ -42,10 +47,9 @@ export function passportSetup() {
                     googleID: profile.id,
                     name: profile.displayName,
                 });
-
                 // Éxito: devolver el usuario guardado
-                const user = { googleID: profile.id , fullName: profile.displayName }; // Crear un objeto de usuario con la información relevante
-                return done(null, user);
+                usuarioDoc = { googleID: profile.id , fullName: profile.displayName, token: accessToken }; // Crear un objeto de usuario con la información relevante
+                return done(null, usuarioDoc);
                 }
             } catch (error) {
                 // Error al guardar el usuario
@@ -55,3 +59,5 @@ export function passportSetup() {
         })
     );
 };
+
+export {usuarioDoc};

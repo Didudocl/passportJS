@@ -18,4 +18,5 @@ router.get('/', authCheck, (req,res) => {
     res.render('profile', {user: nameUser});
 })
 
+
 export default router;
