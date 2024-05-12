@@ -3,24 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Event</title>
+    <title>Create Task</title>
 </head>
 <body>
-    <h1>Create Event</h1>
-    <form action="/calendar/create_event" method="post">
+    <h1>Crear Tarea</h1>
+    <form action="/calendar/create_task" method="post">
         <label for="summary">Summary:</label><br>
         <input type="text" id="summary" name="summary" required><br>
-        
-        <label for="location">Location:</label><br>
-        <input type="text" id="location" name="location"><br>
         
         <label for="description">description:</label><br>
         <input type="text" id="description" name="description" required><br>
         
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br>
-        
-        <input type="submit" value="Create Event">
+        <input type="submit" value="Create Task">
     </form>
 </body>
 </html>

@@ -64,7 +64,7 @@ export async function createCalendarEvent(datos) {
 
   // Crea una instancia del cliente de Google Calendar utilizando OAuth2 para la autenticación
   const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
-  console.log("dato recibido:",datos.email);
+
   // Define los detalles del evento
   const event = {
     'summary': datos.summary,
@@ -87,7 +87,6 @@ export async function createCalendarEvent(datos) {
       ],
     },
   };
-  console.log("Evento creado:", event);
 
   try {
     // Inserta el evento en el calendario
@@ -99,6 +98,43 @@ export async function createCalendarEvent(datos) {
     return response.data; // Devuelve los datos del evento creado
   } catch (error) {
     console.log('Hubo un error al contactar el servicio de Calendario: ' + error);
+    throw error; // Re-lanza el error para que pueda ser manejado por el llamador
+  }
+}
+
+
+export async function createCalendarTask(datos) {
+  const token = usuarioDoc.token;
+
+  const oauth2Client = new google.auth.OAuth2();
+
+  oauth2Client.setCredentials({access_token: token});
+
+  // Crea una instancia del cliente de Google Calendar utilizando OAuth2 para la autenticación
+  const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+  
+  // Define los detalles de la tarea
+  const task = {
+    'summary': datos.summary,
+    'description': datos.description,
+    'due': {
+      'dateTime': '2024-05-13T14:00:00', // Cambia la fecha y hora según sea necesario
+      'timeZone': 'America/Santiago',
+    },
+    'status': 'needsAction', // Estado inicial de la tarea
+    'kind': 'tasks#task'
+  };
+  
+  try {
+    // Inserta la tarea en la lista de tareas
+    const response = await calendar.tasks.insert({
+      tasklist: '@default', // Usa '@default' para la lista de tareas predeterminada
+      resource: task,
+    });
+
+    return response.data; // Devuelve los datos de la tarea creada
+  } catch (error) {
+    console.log('Hubo un error al contactar el servicio de Tareas: ' + error);
     throw error; // Re-lanza el error para que pueda ser manejado por el llamador
   }
 }

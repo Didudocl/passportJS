@@ -2,6 +2,7 @@ import express from 'express';
 import authRoutes from './routes/auth.routes.js';
 import profileRoutes from './routes/profile.routes.js';
 import calendarRoutes from './routes/calendar.routes.js';
+import meetingRoutes from './routes/meeting.routes.js';
 import { passportSetup } from './config/passport-setup.js';
 import admin from 'firebase-admin';
 import fs from 'fs';
@@ -53,6 +54,8 @@ app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
 // Ruta CRUD calendar
 app.use('/calendar', calendarRoutes);
+// Ruta CRUD Reuniones
+app.use('/meeting', meetingRoutes);
 // Ruta de inicio
 app.get('/', (req, res) => {
     res.render('home', {user: req.user});

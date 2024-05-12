@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+</head>
+<body>
+    <h1>Crear Reunión</h1>
+    <form action="/meeting/create_meeting" method="post">
+        <label for="name_meeting">name_meeting:</label><br>
+        <input type="text" id="name_meeting" name="name_meeting" required><br>
+        
+        <label for="date_meeting">date_meeting:</label><br>
+        <input type="date" id="date_meeting" name="date_meeting"><br>
+        
+        <label for="time_meeting">time_meeting:</label><br>
+        <input type="datetime" id="time_meeting" name="time_meeting" required><br>
+        
+        <label for="location_meeting">location_meeting:</label><br>
+        <input type="text" id="location_meeting" name="location_meeting" required><br>
+
+        <label for="type_meeting">type_meeting:</label><br>
+        <input type="text" id="type_meeting" name="type_meeting" required><br>
+
+        <label for="participants_meeting">email:</label><br>
+        <input type="email" id="participants_meeting" name="participants_meeting" required><br>
+
+        <input type="submit" value="Create Meeting">
+    </form>
+</body>
+</html>

@@ -40,6 +40,7 @@ export function passportSetup() {
                     usuarioDoc = {
                         googleID: usuarioRef._fieldsProto.googleID.stringValue,
                         name: usuarioRef._fieldsProto.name.stringValue,
+                        email: profile.emails[0].value,
                         token: accessToken
                     };
                     return done(null, usuarioDoc);
@@ -48,9 +49,10 @@ export function passportSetup() {
                 await db.collection('users').doc(profile.id).set({
                     googleID: profile.id,
                     name: profile.displayName,
+                    email: profile.emails[0].value
                 });
                 // Éxito: devolver el usuario guardado
-                usuarioDoc = { googleID: profile.id , fullName: profile.displayName, token: accessToken }; // Crear un objeto de usuario con la información relevante
+                usuarioDoc = { googleID: profile.id , fullName: profile.displayName, email: profile.emails[0].value, token: accessToken }; 
                 return done(null, usuarioDoc);
                 }
             } catch (error) {
