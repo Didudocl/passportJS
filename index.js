@@ -1,11 +1,12 @@
 import express from 'express';
 import authRoutes from './routes/auth.routes.js';
 import profileRoutes from './routes/profile.routes.js';
+import calendarRoutes from './routes/calendar.routes.js';
 import { passportSetup } from './config/passport-setup.js';
 import admin from 'firebase-admin';
 import fs from 'fs';
 import session from 'express-session';
-import { cookieKey } from './config/configEnv.js';
+import { cookieKey, PORT, HOST } from './config/configEnv.js';
 import passport from 'passport';
 import bodyParser from 'body-parser';
 
@@ -17,6 +18,8 @@ app.use(bodyParser.json());
 
 // Configura el motor de plantillas EJS
 app.set('view engine', 'ejs');
+
+// ! Optimizar la configuración de passport y la passport.session()
 
 // Configura Passport
 passportSetup();
@@ -44,15 +47,18 @@ admin.initializeApp({
 });
 export const db = admin.firestore();
 
-// set up routes
+// Ruta de autenticación con google OAuth 2.0
 app.use('/auth', authRoutes);
+// ! Revisar para que sirve esta ruta
 app.use('/profile', profileRoutes);
+// Ruta CRUD calendar
+app.use('/calendar', calendarRoutes);
 // Ruta de inicio
 app.get('/', (req, res) => {
     res.render('home', {user: req.user});
 });
 
-// Escucha en el puerto 3000
-app.listen(3000, () => {
-    console.log(`http://localhost:3000`);
+
+app.listen(PORT, () => {
+    console.log(`http://${HOST}:${PORT}`);
 });

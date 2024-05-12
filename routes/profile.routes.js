@@ -2,6 +2,9 @@ import { Router } from "express";
 
 const router = Router();
 
+//! Ver que ruta sirve
+
+// ! Middleware que se encarga de verificar si esta logeado o no?
 const authCheck = (req, res, next) => {
     if(!req.user) {
         // if user is not logged in

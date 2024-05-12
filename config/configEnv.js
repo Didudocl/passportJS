@@ -25,5 +25,9 @@ export const keyID = process.env.clientID;
 export const keySecret = process.env.clientSecret;
 // Exporta la variable de entorno cookieKey
 export const cookieKey = process.env.cookieKey;
-// Exporta la variable de entorno cookieKey
+// Exporta la variable de entorno API_KEY
 export const API_KEY = process.env.API_KEY;
+// Exporta la variable de entorno PORT
+export const PORT = process.env.PORT;
+// Exporta la variable de entorno HOST
+export const HOST = process.env.HOST;

@@ -3,6 +3,8 @@ import GoogleStrategy from 'passport-google-oauth20';
 import { keyID, keySecret } from './configEnv.js';
 import {db} from '../index.js';
 
+//! Buscar la optimización y organización de codigo
+
 let usuarioDoc;
 
 // * Se utiliza para convertir el objeto de usuario en un id unico, que se almacena en la sesión.
