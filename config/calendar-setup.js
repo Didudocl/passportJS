@@ -1,6 +1,6 @@
 import { google } from 'googleapis';
 import { usuarioDoc } from './passport-setup.js';
-
+import { v4 as uuidv4 } from 'uuid';
 //! Buscar la optimización y organización de codigo
 
 // Función para obtener los eventos del calendario
@@ -43,6 +43,7 @@ export async function getCalendarEvents() {
                 end: event.end,
                 status: event.status,
                 linkEvent: event.htmlLink,
+                linkMeet: event.hangoutLink,
                 creator: event.creator,
                 organizer: event.organizer,
                 reminder: event.reminders,
@@ -65,20 +66,22 @@ export async function createCalendarEvent(datos) {
   // Crea una instancia del cliente de Google Calendar utilizando OAuth2 para la autenticación
   const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
+  const idUnique = uuidv4();
+
   // Define los detalles del evento
   const event = {
     'summary': datos.summary,
-    'location': datos.location, // 'Santiago, Chile' Cambia la ubicación según sea necesario
+    'location': datos.location,
     'description': datos.description,
     'start': {
-      'dateTime': '2024-05-13T14:00:00', // Cambia la fecha y hora según sea necesario
+      'dateTime': '2024-05-14T22:35:00',
       'timeZone': 'America/Santiago',
     },
     'end': {
-      'dateTime': '2024-05-13T15:00:00', // Cambia la fecha y hora según sea necesario
+      'dateTime': '2024-05-15T23:00:00',
       'timeZone': 'America/Santiago',
     },
-    'attendees': [{'email': datos.email}], // ! Modificar esto a un array de correos
+    'attendees': [{'email': datos.email}, {'email': "ojedacasanueva@gmail.com"}],
     'reminders': {
       'useDefault': false,
       'overrides': [
@@ -86,55 +89,29 @@ export async function createCalendarEvent(datos) {
         {'method': 'popup', 'minutes': 10},
       ],
     },
+    // Incluir información para generar una reunión de Google Meet asociada al evento
+    'conferenceData': {
+      'createRequest': {
+        'requestId': `${idUnique}` // Utilizar el ID del evento como requestId con template literals
+      }
+    },
+    // Indicar la versión de los datos de la conferencia (Conference Data)
+    'conferenceDataVersion': 1
   };
 
   try {
-    // Inserta el evento en el calendario
+    // Insertar el evento en el calendario
     const response = await calendar.events.insert({
       calendarId: 'primary', // Usa 'primary' para el calendario principal del usuario
       resource: event,
+      conferenceDataVersion: 1 // Asegurarse de incluir la versión de los datos de la conferencia aquí también
     });
 
     return response.data; // Devuelve los datos del evento creado
   } catch (error) {
     console.log('Hubo un error al contactar el servicio de Calendario: ' + error);
-    throw error; // Re-lanza el error para que pueda ser manejado por el llamador
+    throw error;
   }
 }
 
 
-export async function createCalendarTask(datos) {
-  const token = usuarioDoc.token;
-
-  const oauth2Client = new google.auth.OAuth2();
-
-  oauth2Client.setCredentials({access_token: token});
-
-  // Crea una instancia del cliente de Google Calendar utilizando OAuth2 para la autenticación
-  const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
-  
-  // Define los detalles de la tarea
-  const task = {
-    'summary': datos.summary,
-    'description': datos.description,
-    'due': {
-      'dateTime': '2024-05-13T14:00:00', // Cambia la fecha y hora según sea necesario
-      'timeZone': 'America/Santiago',
-    },
-    'status': 'needsAction', // Estado inicial de la tarea
-    'kind': 'tasks#task'
-  };
-  
-  try {
-    // Inserta la tarea en la lista de tareas
-    const response = await calendar.tasks.insert({
-      tasklist: '@default', // Usa '@default' para la lista de tareas predeterminada
-      resource: task,
-    });
-
-    return response.data; // Devuelve los datos de la tarea creada
-  } catch (error) {
-    console.log('Hubo un error al contactar el servicio de Tareas: ' + error);
-    throw error; // Re-lanza el error para que pueda ser manejado por el llamador
-  }
-}

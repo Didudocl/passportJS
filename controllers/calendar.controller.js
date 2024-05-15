@@ -1,4 +1,4 @@
-import { createCalendarEvent, createCalendarTask, getCalendarEvents } from "../config/calendar-setup.js";
+import { createCalendarEvent, getCalendarEvents } from "../config/calendar-setup.js";
 
 export async function createEvent(req, res) {
     try {
@@ -14,24 +14,6 @@ export async function createEvent(req, res) {
         console.log("Error en calendar.controller.js -> createEvent(): ", error);
         res.status(500).json({
             message: "Error al crear la reunión" //! Modificar esto
-        })
-    }
-}
-
-export async function createTask(req, res) {
-    try {
-        const data = req.body;
-        // ! Falta validaciones xavalines!
-        const task = await createCalendarTask(data);
-
-        res.status(201).json({
-            message: "Tarea creada exitosamente",
-            reunion: task
-        })
-    } catch (error) {
-        console.log("Error en calendar.controller.js -> createTask(): ", error);
-        res.status(500).json({
-            message: "Error al crear la tarea" //! Modificar esto
         })
     }
 }
