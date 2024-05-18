@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createEvent, getEvents } from '../controllers/calendar.controller.js';
+import { createEvent, getEvents } from '../controllers/google-calendar/calendar.controller.js';
 const router = Router();
 
 

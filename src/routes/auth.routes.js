@@ -4,17 +4,15 @@ import passport from 'passport';
 const router = Router();
 
 //! Ver que ruta sirve
-
 // auth login
 router.get('/login', (req,res) => {
     res.render('login', {user:req.user})
 })
-
 // auth logout
 router.get('/logout', (req, res) => {
     //handle with passport
-    req.logout();
-    res.redirect('/');
+        req.logout()
+        res.redirect('/');
 })
 
 // auth with google
@@ -23,9 +21,7 @@ router.get('/google', passport.authenticate('google', {
 }))
 
 // callback route for google to redirect to
-router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-    // El usuario se ha autenticado correctamente, redirigir a la página principal u otra página de tu aplicación
-    res.redirect('/');
-})
+router.get('/google/redirect', passport.authenticate('google', {successReturnToOrRedirect: '/profile',
+failureRedirect: '/'}))
 
 export default router;

@@ -1,4 +1,4 @@
-import { createCalendarEvent, getCalendarEvents } from "../config/calendar-setup.js";
+import { createCalendarEvent, getCalendarEvents } from "../../services/google-calendar/calendar-setup.js";
 
 export async function createEvent(req, res) {
     try {
@@ -21,7 +21,7 @@ export async function createEvent(req, res) {
 export async function getEvents(req, res) {
     try {
         const events = await getCalendarEvents();
-
+        
         if (!events || events.length === 0) {
             return res.status(404).json({
                 message: "Eventos no encontrados",

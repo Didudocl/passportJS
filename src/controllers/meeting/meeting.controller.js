@@ -1,5 +1,5 @@
-import {db} from '../index.js';
-import { usuarioDoc } from "../config/passport-setup.js";
+import {db} from '../../config/firebaseConfig.js';
+import { usuarioDoc } from "../../services/passport/passport-setup.js";
 
 export async function createMeeting(req, res) {
 	try {

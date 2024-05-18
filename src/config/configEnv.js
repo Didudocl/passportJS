@@ -31,3 +31,5 @@ export const API_KEY = process.env.API_KEY;
 export const PORT = process.env.PORT;
 // Exporta la variable de entorno HOST
 export const HOST = process.env.HOST;
+// Exporta la variable de entorno DOMAIN_EMAIL
+export const DOMAIN_EMAIL = process.env.DOMAIN_EMAIL;
